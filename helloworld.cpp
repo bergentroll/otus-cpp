@@ -1,6 +1,6 @@
 #include <iostream>
 
 int main(int argc, char** argv) {
-  std::cout << "Hello, otus!" << std::endl;
+  std::cout << "Hello, world!" << std::endl;
   return EXIT_SUCCESS;
 }
