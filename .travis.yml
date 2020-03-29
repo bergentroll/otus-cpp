@@ -2,11 +2,14 @@ language: cpp
 dist: bionic
 addons:
   apt:
-    update: false
+    update: false # Но дружочек всё равно делает travis_apt_get_update.
     packages: libboost-test-dev
 
 script:
+- set -e # Останавливаться после первого плохого экзит-кода.
 - cmake .
+- cmake --build . # Потому что цель test ничего не собирает, багу 11 лет, ахаха.
+- cmake --build . --target test
 - cmake --build . --target package
 
 deploy:
