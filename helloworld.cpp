@@ -1,6 +1,9 @@
-#include <iostream>
+#include "helloworld.h"
 
-int main(int argc, char** argv) {
-  std::cout << "Hello, world!" << std::endl;
-  return EXIT_SUCCESS;
+using namespace helloworld;
+
+const std::string HelloWorld::data { "Hello, World!\n" };
+
+void HelloWorld::operator() () {
+  std::cout << HelloWorld::data << std::flush;
 }

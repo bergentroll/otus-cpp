@@ -14,10 +14,12 @@ set_target_properties(${TARGET} PROPERTIES
     CXX_EXTENSIONS NO
 )
 
-add_executable(helloworld helloworld.cpp)
+add_library(helloworld helloworld.cpp)
+add_executable(helloworld_cli main.cpp)
+set_target_properties(helloworld_cli PROPERTIES OUTPUT_NAME helloworld)
+target_link_libraries(helloworld_cli helloworld)
 
 # TODO Testing.
-# TODO Lib.
 
 install(TARGETS helloworld RUNTIME DESTINATION bin)
 
