@@ -15,13 +15,16 @@ set_target_properties(${TARGET} PROPERTIES
 
 find_package(Boost 1.21.0 COMPONENTS unit_test_framework)
 
-add_library(helloworld helloworld.cpp)
-add_executable(helloworld_cli main.cpp)
+set(SRC_PATH "src/")
+include_directories("inc/")
+
+add_library(helloworld ${SRC_PATH}/helloworld.cpp)
+add_executable(helloworld_cli ${SRC_PATH}/main.cpp)
 set_target_properties(helloworld_cli PROPERTIES OUTPUT_NAME helloworld)
 target_link_libraries(helloworld_cli helloworld)
 
 if(Boost_FOUND)
-  add_executable(test_suite test.cpp)
+  add_executable(test_suite ${SRC_PATH}/test.cpp)
   target_link_libraries(
     test_suite
     PRIVATE
