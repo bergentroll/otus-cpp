@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12.4) # Потому что это ранняя проверенная.
 
-if ($ENV{TRAVIS_BUILD_NUMBER})
+if($ENV{TRAVIS_BUILD_NUMBER})
   set(VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
 else()
   set(VERSION 0.0.0)
@@ -14,6 +14,7 @@ set_target_properties(${TARGET} PROPERTIES
 )
 
 find_package(Boost 1.21.0 COMPONENTS unit_test_framework)
+set(GTEST_SRCDIR "/usr/src/gtest/")
 
 set(SRC_PATH "src/")
 include_directories("inc/")
@@ -24,16 +25,36 @@ set_target_properties(helloworld_cli PROPERTIES OUTPUT_NAME helloworld)
 target_link_libraries(helloworld_cli helloworld)
 
 if(Boost_FOUND)
-  add_executable(test_suite ${SRC_PATH}/test.cpp)
+  add_executable(boost_test_suite ${SRC_PATH}/boost_test.cpp)
   target_link_libraries(
-    test_suite
+    boost_test_suite
     PRIVATE
     helloworld
     Boost::unit_test_framework)
   enable_testing()
-  add_test(test_suite test_suite)
+  add_test(boost_test_suite boost_test_suite)
 else()
-  message(WARNING "Test suite will not be launched because Boost not found.")
+  message(
+    WARNING
+    "Boost test suite will not be launched because Boost ist not found.")
+endif()
+
+if(EXISTS "${GTEST_SRCDIR}/CMakeLists.txt")
+  add_subdirectory(${GTEST_SRCDIR}/ ${CMAKE_BINARY_DIR}/gtest/ EXCLUDE_FROM_ALL)
+
+  add_executable(gtest_test_suite ${SRC_PATH}/gtest_test.cpp)
+  target_link_libraries(
+    gtest_test_suite
+    PRIVATE
+    helloworld
+    gtest)
+  enable_testing()
+  add_test(gtest_test_suite gtest_test_suite)
+else()
+  message(
+    WARNING
+    "GTest test suite will not be launched because GTest sources is not found"
+    " at ${GTEST_SRCDIR}.")
 endif()
 
 install(TARGETS helloworld_cli RUNTIME DESTINATION bin)

@@ -3,7 +3,9 @@ dist: bionic
 addons:
   apt:
     update: false # Но дружочек всё равно делает travis_apt_get_update.
-    packages: libboost-test-dev
+    packages:
+    - libboost-test-dev
+    - libgtest-dev
 
 script:
 - set -e # Останавливаться после первого плохого экзит-кода.
